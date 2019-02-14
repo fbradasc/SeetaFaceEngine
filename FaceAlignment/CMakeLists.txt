@@ -16,6 +16,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
 
 include_directories(include)
+include_directories(../FaceDetection/include/)
 
 set(src_files 
     src/cfan.cpp
@@ -33,7 +34,8 @@ if (BUILD_EXAMPLES)
         message(WARNING "OpenCV not found. Test will not be built.")
     else()
         include_directories(${OpenCV_INCLUDE_DIRS} build)
-	link_directories(build)
+        link_directories(build)
+        link_directories(../FaceDetection/build)
         list(APPEND fa_required_libs ${OpenCV_LIBS} seeta_facedet_lib)
         add_executable(fa_test src/test/face_alignment_test.cpp)
         target_link_libraries(fa_test ${fa_required_libs})

@@ -9,6 +9,6 @@ enable_testing ()
 foreach (f ${SRC_LIST})
   string(REGEX REPLACE "[.]cpp" ".bin" BIN ${f})
   add_executable(${BIN} ${f})
-  target_link_libraries(${BIN} viplnet ${OpenCV_LIBS})
+  target_link_libraries(${BIN} viplnet ${OpenCV_LIBS} ${FACE_DETECT_LIB} ${FACE_ALIGN_LIB})
 endforeach ()
 

@@ -18,11 +18,21 @@ endif (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 set(VIPLNET_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(VIPLNET_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+
+set(FACE_DETECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../FaceDetection/include)
+set(FACE_DETECT_SRC_DIR ${PROJECT_SOURCE_DIR}/../FaceDetection/src)
+set(FACE_DETECT_LIB ${PROJECT_SOURCE_DIR}/../FaceDetection/build/libseeta_facedet_lib.so)
+
+set(FACE_ALIGN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../FaceAlignment/include)
+set(FACE_ALIGN_SRC_DIR ${PROJECT_SOURCE_DIR}/../FaceAlignment/src)
+set(FACE_ALIGN_LIB ${PROJECT_SOURCE_DIR}/../FaceAlignment/build/libseeta_fa_lib.so)
 # set __VIOL_LOG__ macro
 # add_definitions(-D__VIPL_LOG__)
 
 include_directories(${VIPLNET_INCLUDE_DIR})
 include_directories(${VIPLNET_SRC_DIR})
+include_directories(${FACE_DETECT_INCLUDE_DIR})
+include_directories(${FACE_ALIGN_INCLUDE_DIR})
 
 add_subdirectory(src)
 

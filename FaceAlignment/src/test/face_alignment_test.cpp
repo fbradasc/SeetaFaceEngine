@@ -34,8 +34,8 @@
 #include <iostream>
 #include <string>
 
-#include "cv.h"
-#include "highgui.h"
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 #include "face_detection.h"
 #include "face_alignment.h"
@@ -105,10 +105,10 @@ int main(int argc, char** argv)
   point_detector.PointDetectLandmarks(image_data, faces[0], points);
 
   // Visualize the results
-  cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
+  cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), cv::Scalar(255, 0, 0));
   for (int i = 0; i<pts_num; i++)
   {
-    cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+    cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, cv::Scalar(0, 255, 0), CV_FILLED);
   }
   cvSaveImage("result.jpg", img_color);
 
