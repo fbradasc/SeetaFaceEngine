@@ -5,12 +5,11 @@ message(${SRC_LIST})
 # add external libraries
 find_package(OpenCV REQUIRED)
 
-include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/include/)
-include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/include/)
+include_directories(${PROJECT_SOURCE_DIR}/../FaceAlignment/include/)
+include_directories(${PROJECT_SOURCE_DIR}/../FaceDetection/include/)
 
-link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/build/)
-link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/build/)
-
+link_directories(${PROJECT_SOURCE_DIR}/../FaceAlignment/build/)
+link_directories(${PROJECT_SOURCE_DIR}/../FaceDetection/build/)
 
 enable_testing ()
 foreach (f ${SRC_LIST})

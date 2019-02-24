@@ -16,13 +16,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
 
 include_directories(include)
-include_directories(../FaceDetection/include/)
+include_directories(${PROJECT_SOURCE_DIR}/../FaceDetection/include/)
 
-include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/include/)
-include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/include/)
-
-link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/build/)
-link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/build/)
+link_directories(build)
+link_directories(${PROJECT_SOURCE_DIR}/../FaceDetection/build/)
 
 set(src_files 
     src/cfan.cpp
