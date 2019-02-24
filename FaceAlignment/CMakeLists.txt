@@ -18,6 +18,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
 include_directories(include)
 include_directories(../FaceDetection/include/)
 
+include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/include/)
+include_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/include/)
+
+link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceAlignment/build/)
+link_directories(/home/fbradasc/sorgenti/SeetaFaceEngine/FaceDetection/build/)
+
 set(src_files 
     src/cfan.cpp
     src/face_alignment.cpp
@@ -25,7 +31,7 @@ set(src_files
     )
 
 add_library(seeta_fa_lib SHARED ${src_files})
-set(fa_required_libs seeta_fa_lib)
+set(fa_required_libs seeta_fa_lib seeta_facedet_lib)
 
 if (BUILD_EXAMPLES)
     message(STATUS "Build with examples.")
