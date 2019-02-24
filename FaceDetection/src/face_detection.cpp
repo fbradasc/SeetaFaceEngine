@@ -48,7 +48,8 @@ class FaceDetection::Impl {
         min_face_size_(20), max_face_size_(-1),
         cls_thresh_(3.85f) {}
 
-  ~Impl() {}
+  ~Impl() {
+  }
 
   inline bool IsLegalImage(const seeta::ImageData & image) {
     return (image.num_channels == 1 && image.width > 0 && image.height > 0 &&

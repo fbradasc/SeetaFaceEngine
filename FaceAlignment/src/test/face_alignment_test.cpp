@@ -34,8 +34,11 @@
 #include <iostream>
 #include <string>
 
-#include "cv.h"
-#include "highgui.h"
+#include "opencv2/core/core.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 #include "face_detection.h"
 #include "face_alignment.h"
@@ -48,10 +51,12 @@ std::string DATA_DIR = "./data/";
 std::string MODEL_DIR = "./model/";
 #endif
 
+using namespace cv;
+
 int main(int argc, char** argv)
 {
   // Initialize face detection model
-  seeta::FaceDetection detector("../../../FaceDetection/model/seeta_fd_frontal_v1.0.bin");
+  seeta::FaceDetection detector((MODEL_DIR + "seeta_fd_frontal_v1.0.bin").c_str());
   detector.SetMinFaceSize(40);
   detector.SetScoreThresh(2.f);
   detector.SetImagePyramidScaleFactor(0.8f);
@@ -61,31 +66,21 @@ int main(int argc, char** argv)
   seeta::FaceAlignment point_detector((MODEL_DIR + "seeta_fa_v1.1.bin").c_str());
 
   //load image
-  IplImage *img_grayscale = NULL;
-  img_grayscale = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 0);
-  if (img_grayscale == NULL)
-  {
-    return 0;
-  }
-
-  IplImage *img_color = cvLoadImage((DATA_DIR + "image_0001.png").c_str(), 1);
+  cv::Mat img_color = cv::imread((DATA_DIR + "image_0001.png").c_str(), 1);
   int pts_num = 5;
-  int im_width = img_grayscale->width;
-  int im_height = img_grayscale->height;
-  unsigned char* data = new unsigned char[im_width * im_height];
-  unsigned char* data_ptr = data;
-  unsigned char* image_data_ptr = (unsigned char*)img_grayscale->imageData;
-  int h = 0;
-  for (h = 0; h < im_height; h++) {
-    memcpy(data_ptr, image_data_ptr, im_width);
-    data_ptr += im_width;
-    image_data_ptr += img_grayscale->widthStep;
-  }
+
+  cv::Mat img = cv::imread((DATA_DIR + "image_0001.png").c_str(), cv::IMREAD_UNCHANGED);
+  cv::Mat img_gray;
+
+  if (img.channels() != 1)
+    cv::cvtColor(img, img_gray, cv::COLOR_BGR2GRAY);
+  else
+    img_gray = img;
 
   seeta::ImageData image_data;
-  image_data.data = data;
-  image_data.width = im_width;
-  image_data.height = im_height;
+  image_data.data = img_gray.data;
+  image_data.width = img_gray.cols;
+  image_data.height = img_gray.rows;
   image_data.num_channels = 1;
 
   // Detect faces
@@ -94,9 +89,6 @@ int main(int argc, char** argv)
 
   if (face_num == 0)
   {
-    delete[]data;
-    cvReleaseImage(&img_grayscale);
-    cvReleaseImage(&img_color);
     return 0;
   }
 
@@ -105,16 +97,13 @@ int main(int argc, char** argv)
   point_detector.PointDetectLandmarks(image_data, faces[0], points);
 
   // Visualize the results
-  cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
+  cv::rectangle(img_color, cv::Point(faces[0].bbox.x, faces[0].bbox.y), cv::Point(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
   for (int i = 0; i<pts_num; i++)
   {
-    cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+      cv::circle(img_color, cv::Point(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), cv::FILLED);
   }
-  cvSaveImage("result.jpg", img_color);
+  cv::imwrite("result.jpg", img_color);
 
   // Release memory
-  cvReleaseImage(&img_color);
-  cvReleaseImage(&img_grayscale);
-  delete[]data;
   return 0;
 }

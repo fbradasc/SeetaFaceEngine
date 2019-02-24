@@ -61,8 +61,11 @@ using namespace std;
 
 #endif //__unix
 
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/imgproc/types_c.h>
+
 #include "face_identification.h"
 #include "recognizer.h"
 #include "face_detection.h"
@@ -92,14 +95,14 @@ std::string MODEL_DIR = "./model/";
 
 int main(int argc, char* argv[]) {
   // Initialize face detection model
-  seeta::FaceDetection detector("seeta_fd_frontal_v1.0.bin");
+  seeta::FaceDetection detector((MODEL_DIR + "seeta_fd_frontal_v1.0.bin").c_str());
   detector.SetMinFaceSize(40);
   detector.SetScoreThresh(2.f);
   detector.SetImagePyramidScaleFactor(0.8f);
   detector.SetWindowStep(4, 4);
 
   // Initialize face alignment model 
-  seeta::FaceAlignment point_detector("seeta_fa_v1.1.bin");
+  seeta::FaceAlignment point_detector((MODEL_DIR + "seeta_fa_v1.1.bin").c_str());
 
   // Initialize face Identification model 
   FaceIdentification face_recognizer((MODEL_DIR + "seeta_fr_v1.0.bin").c_str());
